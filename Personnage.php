@@ -1,5 +1,4 @@
 <?php
-
 class Personnage{
     private $id;
     private $nom;
@@ -9,11 +8,11 @@ class Personnage{
         $this->dispatch($donnees);
     }
 
-    private function dispatch($donnees){
+    private function dispatch(array $donnees){
         foreach($donnees as $key => $val){
             $method = 'set'.ucfirst($key);
             if(method_exists($this,$method)){
-                return $this->$method($val);
+                $this->$method($val);
             }
         }
     }
@@ -28,27 +27,35 @@ class Personnage{
         return $this->degats;
     }
 
-    public function setId(){
+    public function setId($id){
         $this->id = $id;
 
     }
 
     public function setNom($nom){
-        $this->nom = $nom;
+        if (is_string($nom))
+        {
+            $this->nom = $nom;
+        }
     }
     public function setDegats($degats){
-        $this->nom = $degats;
+        $degats = (int) $degats;
+
+        if ($degats >= 0 && $degats <= 100)
+        {
+            $this->degats = $degats;
+        }
     }
 
 
     public function frapper($perso){
-        $perso.recevoirDegats();
+        $perso->recevoirDegats();
     }
 
     public function recevoirDegats(){
         $this->degats += 5;
         if($this->degats === 100){
-            PersonnageManager::getDb()->delete($this.name);
+            echo 'Le personnage est mort';
         }
     }
 

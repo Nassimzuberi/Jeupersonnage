@@ -20,25 +20,36 @@ class PersonnageManager{
 INSERT INTO personnage(nom) 
 VALUES ("'. $personnage->getNom() . '") ;'
         );
-        var_dump($return);
     }
 
-    public function CountPersonnage(){
+    public function ListPersonnage(){
         $data = $this->pdo->query('SELECT * FROM personnage');
-        $datas = $data->fetchAll( PDO::FETCH_CLASS);
+        $datas = $data->fetchAll();
         return $datas;
-
+    }
+    public function PersonnageAttaque($id){
+        $data = $this->pdo->query('SELECT * FROM personnage WHERE id <>'. $id);
+        $datas = $data->fetchAll();
+        return $datas;
     }
 
+    public function exist($id){
+        $perso = $this->find($id);
+        if(!$perso){
+            return false;
+        }else{
+            return true;
+        }
+    }
     public function find($id){
        $data =  $this->pdo->query("SELECT * FROM personnage WHERE id = ". $id );
-       $datas = $data->fetchAll(PDO::FETCH_CLASS);
-        var_dump($datas);
+       $datas = $data->fetch();
+        return new Personnage($datas);
     }
     public function deletePersonnage($personnage){
 
 
-        return $this->pdo->query("DELETE FROM personnage WHERE id = ".$personnage->id);
+        return $this->pdo->query("DELETE FROM personnage WHERE id = ".$personnage->getId);
 
     }
     public function updatePersonnage($personnage){
@@ -46,12 +57,25 @@ VALUES ("'. $personnage->getNom() . '") ;'
 
         $this->pdo->query("
         UPDATE personnage 
-        SET degats = ". $personnage->degats ."
-        WHERE id = ".$personnage->id
+        SET degats = ". $personnage->getDegats() ."
+        WHERE id = ".$personnage->getId()
         );
 
     }
 
+    public function ListDegats($id){
+    $data = $this->pdo->query('SELECT * FROM attaque WHERE id_victime = '. $id);
+    $datas = $data->fetchAll();
+    return $datas;
+}
+    public function ListAttaque($id){
+        $data = $this->pdo->query('SELECT * FROM attaque WHERE id_attaquant = '. $id);
+        $datas = $data->fetchAll();
+        return $datas;
+    }
+    public function getDb(){
+        return $this->pdo;
+    }
     public function setDb($db){
         $this->pdo = $db;
     }
