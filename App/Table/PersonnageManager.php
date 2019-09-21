@@ -1,5 +1,6 @@
 <?php
-require('Personnage.php');
+namespace App\Table;
+use App\Entity\Personnage;
 /**
  * Created by PhpStorm.
  * User: USER
@@ -23,28 +24,25 @@ VALUES ("'. $personnage->getNom() . '") ;'
     }
 
     public function ListPersonnage(){
-        $data = $this->pdo->query('SELECT * FROM personnage');
-        $datas = $data->fetchAll();
-        return $datas;
+        $data = $this->getDb()->query('SELECT * FROM personnage');
+        return $data;
     }
     public function PersonnageAttaque($id){
         $data = $this->pdo->query('SELECT * FROM personnage WHERE id <>'. $id);
-        $datas = $data->fetchAll();
-        return $datas;
+        return $data;
     }
 
-    public function exist($id){
-        $perso = $this->find($id);
-        if(!$perso){
+    public function exist($nom){
+        $perso = $this->pdo->getPDO()->query("SELECT * FROM personnage WHERE nom =" . $nom);
+        if(is_null($perso)){
             return false;
         }else{
             return true;
         }
     }
     public function find($id){
-       $data =  $this->pdo->query("SELECT * FROM personnage WHERE id = ". $id );
-       $datas = $data->fetch();
-        return new Personnage($datas);
+       $data =  $this->pdo->query("SELECT * FROM personnage WHERE id = ". $id , true);
+        return new Personnage($data);
     }
     public function deletePersonnage($personnage){
 
@@ -65,13 +63,11 @@ VALUES ("'. $personnage->getNom() . '") ;'
 
     public function ListDegats($id){
     $data = $this->pdo->query('SELECT * FROM attaque WHERE id_victime = '. $id);
-    $datas = $data->fetchAll();
-    return $datas;
+    return $data;
 }
     public function ListAttaque($id){
         $data = $this->pdo->query('SELECT * FROM attaque WHERE id_attaquant = '. $id);
-        $datas = $data->fetchAll();
-        return $datas;
+        return $data;
     }
     public function getDb(){
         return $this->pdo;

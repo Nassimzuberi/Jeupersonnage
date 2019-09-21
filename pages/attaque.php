@@ -22,4 +22,4 @@ header("Refresh: 2;url=index.php?p=aventure&id=". $personnage->getId());
 
 <h1> Vous avez frapper <?= $victime->getNom(); ?></h1>
 
-<a href="index.php?p=aventure&id=<?= $personnage->getId(); ?>">Retour</a>
+<a href="../public/index.php?p=aventure&id=<?= $personnage->getId(); ?>">Retour</a>
