@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database;
+namespace Core\Database;
 use \PDO;
 class Database{
     private $db_name;
@@ -35,6 +35,7 @@ class Database{
             return $data;
         }
         if($one){
+
             $datas = $data->fetch();
         }
         else{

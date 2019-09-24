@@ -1,6 +1,6 @@
 <?php
 namespace App;
-use App\Database\Database;
+use Core\Database\Database;
 class App{
     private $db;
     private static $_instance;
@@ -22,7 +22,13 @@ class App{
     }
 
     public static function load(){
+        session_start();
         require ROOT . '/App/Autoloader.php';
         Autoloader::register();
+    }
+
+    public function getTable($table){
+        $return = '\App\Table\\' . ucfirst($table) . 'Table';
+        return new $return($this->getDb());
     }
 }

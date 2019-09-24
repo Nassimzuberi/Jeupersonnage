@@ -1,33 +1,49 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: USER
+ * Users: USER
  * Date: 19/09/2019
  * Time: 12:31
  */
-$personnage = $manager->find($_GET['id']);
-$personnages = $manager->PersonnageAttaque($_GET['id']);
-$degats = $manager->ListDegats($_GET['id']);
-$attaques = $manager->ListAttaque($_GET['id']);
 
+if(isset($_SESSION['personnage'])){
+    $personnage = $manager->find($_SESSION['personnage']);
+}else{
+    $id = $auth->loginPersonnage($_POST['id']);
+    $personnage = $manager->find($id);
+}
+$personnages = $manager->allWithoutUser($auth->getUserId());
+$degats = $atk->allDegats($personnage->getId());
+$attaques = $atk->allAttaque($personnage->getId());
+
+if(isset($_POST['hydratation'])){
+    $personnage->hydrate();
+}
 ?>
 <div class="card mb-3">
 
     <div class="card-body">
         <h2 class="card-title"><?= $personnage->getNom() ; ?></h2>
+        <div ><i class="fas fa-capsules"></i> <?= $personnage->getPills(); ?>  pills  |  <i class="fas fa-prescription-bottle-alt"></i> <?= $personnage->getPotions(); ?>  potions </div>
+
+    </div>
         <div class="progress">
             <div class="progress-bar bg-success" role="progressbar" style="width: <?= 100 - $personnage->getDegats(); ?>%;" aria-valuemax="100"><?= 100 - $personnage->getDegats(); ?> HP</div>
         </div>
 
-    </div>
 </div>
 <div class="text-center ">
-    <button class="btn btn-warning" type="button" data-target="#collapseAttaque" data-toggle="collapse" aria-controls="collapseAttaque">
-        <h1>Attaquer</h1>
-    </button>
-    <button class="btn btn-success ml-3" type="button">
-        <h1>S'hydrater</h1>
-    </button>
+    <div class="btn-group">
+        <button class="btn btn-warning" type="button" data-target="#collapseAttaque" data-toggle="collapse" aria-controls="collapseAttaque">
+            <h1>Attaquer</h1>
+        </button>
+        <form method="post" action="">
+            <button class="btn btn-success ml-3" type="submit" name="hydratation">
+                <h1>S'hydrater - 1 <i class="fas fa-prescription-bottle-alt"></i></h1>
+            </button>
+        </form>
+    </div>
+
     <div class="collapse" id="collapseAttaque">
         <?php foreach($personnages as $personnage) : ?>
 
@@ -38,9 +54,9 @@ $attaques = $manager->ListAttaque($_GET['id']);
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form method="post" action="../public/index.php?p=aventure.attaque&id=<?= $_GET['id']; ?>">
+                    <form method="post" action="../public/index.php?p=aventure.attaque">
                         <input type="hidden" name="id_attaque" value="<?= $personnage['id']; ?>">
-                        <button class="btn btn-danger" type="submit" >Attaquer</button>
+                        <button class="btn btn-danger" type="submit" >Attaquer - 1 <i class="fas fa-capsules"></i></button>
                     </form>
                 </div>
             </div>

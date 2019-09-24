@@ -21,6 +21,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/0a9da0bbd4.js" crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
@@ -34,11 +37,30 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="index.php">Accueil
-                        <span class="sr-only">(current)</span>
+                    <?php if($auth->logged()){
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?p=choisir">Changer de perso
+                            </a>
+                        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?p=deconnexion">Deconnexion
                     </a>
                 </li>
+                    <?php
+                    } else {
+                        ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.php">Connexion
+                    </a>
+                </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?p=inscription">Inscription
+                            </a>
+                        </li>
+                <?php
+                    }
+                ?>
             </ul>
         </div>
     </div>
@@ -47,7 +69,6 @@
 
 
 <div>
-
     <div class="container" style="padding-top: 30px;">
         <?= $content; ?>
     </div>
