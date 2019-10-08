@@ -26,7 +26,28 @@ class Database{
     }
 
     public function query($statement,$one = false){
-        $data =  $this->getPDO()->query($statement);
+            $data =  $this->getPDO()->query($statement);
+        if(
+            strpos($statement, 'UPDATE') === 0 ||
+            strpos($statement, 'INSERT') === 0 ||
+            strpos($statement, 'DELETE') === 0
+        ){
+            return $data;
+        }
+        if($one){
+
+            $datas = $data->fetch();
+        }
+        else{
+            $datas = $data->fetchAll();
+
+        }
+        return $datas;
+    }
+    public function prepare($statement,$attributes,$one = false){
+
+            $req = $this->getPDO()->prepare($statement);
+            $data= $req->execute($attributes);
         if(
             strpos($statement, 'UPDATE') === 0 ||
             strpos($statement, 'INSERT') === 0 ||

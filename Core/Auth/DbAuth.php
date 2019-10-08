@@ -4,8 +4,8 @@ use Core\Database\Database;
 use App\App;
 class DbAuth{
     private $db;
-    public function __construct(Database $db){
-        $this->db = $db;
+    public function __construct(){
+        $this->db = App::getInstance()->getDb();
     }
 
     public function getUserId(){

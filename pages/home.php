@@ -1,8 +1,4 @@
-<?php
-$auth->changerPersonnage();
-$personnages = $manager->allByUser($auth->getUserId());
-$user = $app->getTable('Users')->find($_SESSION['auth']);
-?>
+
 <h1 class="mb-3">Choisir un combattant</h1>
 
         <?php foreach($personnages as $personnage) : ?>
@@ -35,35 +31,3 @@ $user = $app->getTable('Users')->find($_SESSION['auth']);
         <button class="btn btn-success" type="submit" name="creation">Création</button>
 
     </form>
-
-
-<?php
-if(isset($_POST["creation"])){
-    if($_POST["nom"]){
-        if($manager->exist($_POST["nom"])){
-            echo "<div class='alert alert-danger' > Ce nom est deja pris ! </div>";
-        }else{
-            if($user->getMax_slot() > $app->getTable('Users')->countPersonnage($_SESSION['auth'])){
-                $perso = new App\Entity\Personnage(["nom" => $_POST["nom"] , "id_user" => $auth->getUserId()]);
-                $manager->addPersonnage($perso);
-                header('refresh:0');
-            }else{
-                echo "<div class='alert alert-danger' > Vous n'avez plus de slot libre </div>";
-
-            }
-
-        }
-    }
-    else{
-        echo "<div class='alert alert-danger' > Vous n'avez pas renseigné de nom </div>";
-    }
-}
-
-if(isset($_POST["supprimer"])){
-    $person = $manager->find($_POST['id']);
-    $manager->delete($person);
-    header('refresh:0');
-}
-
-
-?>

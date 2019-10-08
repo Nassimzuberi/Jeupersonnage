@@ -1,39 +1,40 @@
 <?php
 
+
 define('ROOT',dirname(__DIR__));
 require ROOT . '/App/App.class.php';
 
 $app = \App\App::getInstance();
 $app::load();
-$manager = $app->getTable('Personnage');
-$atk = $app->getTable('Attaque');
-$auth = new Core\Auth\DbAuth($app->getDb());
-ob_start();
 if(isset($_GET['p'])){
     $page = $_GET['p'];
 
 } else{
-    $page = 'home';
+    $page = 'login';
 }
 
-if($page === 'home') {
-    require(ROOT . '/pages/login.php');
+if($page === 'login') {
+    $controller = new \App\Controller\UserController();
+    $controller->login();
+}elseif($page === 'inscription') {
+    $controller = new \App\Controller\UserController();
+    $controller->inscription();
+}elseif($page === 'deconnexion') {
+    $controller = new \App\Controller\UserController();
+    $controller->deconnexion();
 }
-elseif($page === 'choisir'){
-    require(ROOT . '/pages/home.php');
+elseif($page === 'home'){
+    $controller = new \App\Controller\PersonnageController();
+    $controller->choisir();
 }
 elseif($page === 'aventure'){
-    require(ROOT . '/pages/aventure.php');
-}elseif($page === 'aventure.attaque'){
-    require(ROOT . '/pages/attaque.php');
+    $controller = new \App\Controller\PersonnageController();
+    $controller->aventure();
+}elseif($page === 'attaque'){
+    $controller = new \App\Controller\PersonnageController();
+    $controller->attaque();
 }
-elseif($page === 'deconnexion') {
-    require(ROOT . '/pages/deconnexion.php');
-}elseif($page === 'inscription') {
-    require(ROOT . '/pages/inscription.php');
-}
-$content = ob_get_clean();
-require(ROOT . '/pages/templates/default.php');
+
 
 ?>
 

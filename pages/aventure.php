@@ -1,25 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * Users: USER
- * Date: 19/09/2019
- * Time: 12:31
- */
 
-if(isset($_SESSION['personnage'])){
-    $personnage = $manager->find($_SESSION['personnage']);
-}else{
-    $id = $auth->loginPersonnage($_POST['id']);
-    $personnage = $manager->find($id);
-}
-$personnages = $manager->allWithoutUser($auth->getUserId());
-$degats = $atk->allDegats($personnage->getId());
-$attaques = $atk->allAttaque($personnage->getId());
-
-if(isset($_POST['hydratation'])){
-    $personnage->hydrate();
-}
-?>
 <div class="card mb-3">
 
     <div class="card-body">
@@ -54,7 +33,7 @@ if(isset($_POST['hydratation'])){
                     </div>
                 </div>
                 <div class="card-footer">
-                    <form method="post" action="../public/index.php?p=aventure.attaque">
+                    <form method="post" action="../public/index.php?p=attaque">
                         <input type="hidden" name="id_attaque" value="<?= $personnage['id']; ?>">
                         <button class="btn btn-danger" type="submit" >Attaquer - 1 <i class="fas fa-capsules"></i></button>
                     </form>

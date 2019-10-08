@@ -3,16 +3,10 @@ namespace App\Table;
 use App\Entity\Personnage;
 use Core\Table\Table;
 
-/**
- * Created by PhpStorm.
- * Users: USER
- * Date: 19/09/2019
- * Time: 12:10
- */
+
 class PersonnageTable extends Table {
 
-    protected $table = "personnage" ;
-    protected $class_name = "App\Entity\Personnage";
+
     public function addPersonnage($personnage){
         $this->getDb()->query('
 INSERT INTO personnage(nom,id_user) 

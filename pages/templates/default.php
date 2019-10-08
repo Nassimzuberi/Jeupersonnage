@@ -40,7 +40,7 @@
                     <?php if($auth->logged()){
                         ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="?p=choisir">Changer de perso
+                            <a class="nav-link" href="?p=home">Changer de perso
                             </a>
                         </li>
                 <li class="nav-item">
